@@ -81,6 +81,6 @@ def format_time_period(time_period):
                 end_date = calendar.month_name[time_period['endDate']['month']] + ',' + end_date
     
     date_str = ""
-    if start_date: date_str += "From {start_date} "
-    if end_date: date_str += "to {end_date}"
+    if start_date: date_str += f"From {start_date} "
+    if end_date: date_str += f"to {end_date}"
     return date_str
