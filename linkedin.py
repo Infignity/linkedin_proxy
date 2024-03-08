@@ -23,16 +23,11 @@ def format_profile(included):
             location = item.get('locationName')
             title = item.get('title')
             time_period = item['timePeriod']
+            time_period_str = format_time_period(time_period)
 
-            start_date, end_date = "", ""
-            if time_period:
-                start_date = calendar.month_name[time_period['startDate']['month']] + ',' + str(time_period['startDate']['year'])
-                if time_period.get('endDate'):
-                    end_date = calendar.month_name[time_period['endDate']['month']] + ',' + str(time_period['endDate']['year'])
-                
             experience += textwrap.dedent(f"""
                 {title} at {company_name}
-                From {start_date} to {end_date}
+                {time_period_str}
                 Location: {location}
             """)
             if description:
@@ -46,19 +41,11 @@ def format_profile(included):
             school = item.get("schoolName")
                 
             time_period = item['timePeriod']
-
-            start_date, end_date = "", ""
-            if time_period:
-                if time_period.get('startDate'):
-                    start_date = str(time_period['startDate']['year'])
-
-                if time_period.get('endDate'):
-                    end_date = str(time_period['endDate']['year'])
-                
+            time_period_str = format_time_period(time_period)
             mini_edu = textwrap.dedent(f"""
                 {school}
                 Degree: {degree}
-                From {start_date} to {end_date}
+                {time_period_str}
             """)
             if item.get('activities'):
                 mini_edu += f"Activities: {item.get('activities')}"
@@ -79,3 +66,21 @@ def format_profile(included):
     skills = 'Skills:\n' + ', '.join(skills)
 
     return "\n".join([profile, experience, education, skills])
+
+
+def format_time_period(time_period):
+    start_date, end_date = None, None
+    if time_period:
+        if time_period.get('startDate'):
+            start_date = str(time_period['startDate']['year'])
+            if time_period['startDate'].get('month'):
+                start_date = calendar.month_name[time_period['startDate']['month']] + ',' + start_date
+        if time_period.get('endDate'):
+            end_date = str(time_period['endDate']['year'])
+            if time_period['endDate'].get('month'):
+                end_date = calendar.month_name[time_period['endDate']['month']] + ',' + end_date
+    
+    date_str = ""
+    if start_date: date_str += "From {start_date} "
+    if end_date: date_str += "to {end_date}"
+    return date_str
