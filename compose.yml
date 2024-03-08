@@ -1,0 +1,7 @@
+services:
+  linkedin:
+    image: linkedin_proxy
+    build: .
+    ports:
+      - 5252:80
+    
