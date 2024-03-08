@@ -23,10 +23,13 @@ def format_profile(included):
             location = item.get('locationName')
             title = item.get('title')
             time_period = item['timePeriod']
-            start_date = calendar.month_name[time_period['startDate']['month']] + ',' + str(time_period['startDate']['year'])
-            if time_period.get('endDate'):
-                end_date = calendar.month_name[time_period['endDate']['month']] + ',' + str(time_period['endDate']['year'])
-            
+
+            start_date, end_date = "", ""
+            if time_period:
+                start_date = calendar.month_name[time_period['startDate']['month']] + ',' + str(time_period['startDate']['year'])
+                if time_period.get('endDate'):
+                    end_date = calendar.month_name[time_period['endDate']['month']] + ',' + str(time_period['endDate']['year'])
+                
             experience += textwrap.dedent(f"""
                 {title} at {company_name}
                 From {start_date} to {end_date}
@@ -44,6 +47,7 @@ def format_profile(included):
                 
             time_period = item['timePeriod']
 
+            start_date, end_date = "", ""
             if time_period:
                 if time_period.get('startDate'):
                     start_date = str(time_period['startDate']['year'])

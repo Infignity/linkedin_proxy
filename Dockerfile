@@ -6,7 +6,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 # This keeps Python from buffering stdin/stdout
 ENV PYTHONUNBUFFERED 1
 
-RUN apt-get udpate
+RUN apt-get update
 
 RUN apt-get install ca-certificates curl
 
