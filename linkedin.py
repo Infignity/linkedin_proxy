@@ -84,3 +84,63 @@ def format_time_period(time_period):
     if start_date: date_str += f"From {start_date} "
     if end_date: date_str += f"to {end_date}"
     return date_str
+
+def format_company(included, public_name):
+    about = ""
+    industries = []
+    for item in included:
+        if item['$type'] == "com.linkedin.voyager.organization.Company" and item['universalName'] == public_name:
+            name = item.get('name')
+            if name:
+                about += name + '\n'
+
+            tagline = item.get('tagline')
+            if tagline: about += f"Tagline: {tagline}" + "\n"
+
+            description = item.get('description')
+            if description: about += f"Description: {description}\n"
+            
+            company_page_url = item.get('companyPageUrl')
+            if company_page_url: about += f"Company page url: {company_page_url}\n"
+
+            company_type = item.get('companyType')
+            if company_type and company_type.get('localizedName'):
+                about += f"Company type: {item['companyType']['localizedName']}\n"
+
+            confirmed_locations = item.get('comfirmedLocations')
+            if confirmed_locations:
+                about += "Locations:\n"
+                for location in confirmed_locations:
+                    location.pop('$type')
+                    about += str(location)
+
+            founded_on = item.get('foundedOn')
+            if founded_on: about += f"Founded on: {founded_on['year']}\n"
+
+            headquarter = item.get('headquarter')
+            if headquarter:
+                about += (f"Headquarter:"
+                    f" {headquarter.get('city')}, {headquarter.get('geographicArea')}, {headquarter.get('country')}\n")
+
+            staff_range = item.get('staffCountRange')
+            if staff_range:
+                about += "Staff range: "
+                if staff_range.get('start'):
+                    about += f"{staff_range.get('start')}"
+                if staff_range.get('end'):
+                    about += f"-{staff_range.get('end')}\n"
+                else:
+                    about += "+\n"
+
+            members = item.get('staffCount')
+            if members:
+                about += f"Associated members: {members}"
+        
+        if item['$type'] == "com.linkedin.voyager.common.Industry":
+            if item.get('localizedName'):
+                industries.append(item['localizedName'])
+
+    if industries:
+        about += "\nIndustries: " + ', '.join(industries)
+
+    return about
