@@ -115,7 +115,7 @@ def format_company(included, public_name):
                     about += str(location)
 
             founded_on = item.get('foundedOn')
-            if founded_on: about += f"Founded on: {founded_on['year']}\n"
+            if founded_on and founded_on.get('year'): about += f"Founded on: {founded_on['year']}\n"
 
             headquarter = item.get('headquarter')
             if headquarter:
