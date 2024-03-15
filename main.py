@@ -35,3 +35,8 @@ def company(universal_name: str, resp: Response):
     
     formatted_about = format_company(res.json()['included'], universal_name)
     return {'text': formatted_about}
+
+@app.get("/test")
+def test(url="https://google.com"):
+    res = requests.get(url)
+    return res.status_code
