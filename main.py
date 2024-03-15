@@ -10,7 +10,7 @@ app = FastAPI()
 def linkedin(username: str, resp: Response):
     "Return formated profile data of username."
     url = f"https://www.linkedin.com/voyager/api/identity/profiles/{username}/profileView"
-    res = requests.get(url, headers=headers, cookies=cookies, impersonate="chrome110")
+    res = requests.get(url, headers=headers, cookies=cookies, timeout=200, impersonate="chrome110")
     if res.status_code != 200:
         resp.status_code = res.status_code
         return {'text': res.text}
